@@ -4,6 +4,7 @@ import Browser
 import Html exposing (Html, button, div, li, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
+import Http
 
 
 main : Program () Model Msg
@@ -17,6 +18,11 @@ main =
 
 
 type Msg
+    = PostCommand RemoteCommand
+    | CommandPosted (Result Http.Error ())
+
+
+type RemoteCommand
     = ShutDown
 
 
@@ -40,7 +46,7 @@ init () =
 view : Model -> Html Msg
 view model =
     li []
-        [ button [ onClick ShutDown ] [ text "shut down" ]
+        [ button [ onClick (PostCommand ShutDown) ] [ text "shut down" ]
         ]
 
 
@@ -51,7 +57,36 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ShutDown ->
+        PostCommand command ->
+            ( model
+            , postCommand command
+            )
+
+        CommandPosted result ->
             ( model
             , Cmd.none
             )
+
+
+
+{- http -}
+
+
+postCommand : RemoteCommand -> Cmd Msg
+postCommand remoteCommand =
+    Http.post
+        { url = "http://localhost:8000/"
+        , body = Http.stringBody "text/plain" (remoteCommandToString remoteCommand)
+        , expect = Http.expectWhatever CommandPosted
+        }
+
+
+
+{- conversions -}
+
+
+remoteCommandToString : RemoteCommand -> String
+remoteCommandToString remoteCommand =
+    case remoteCommand of
+        ShutDown ->
+            "shutdown"
