@@ -1,0 +1,129 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 98%;
+    height: 100%;
+    
+    font-family: 'Open Sans', sans-serif;
+    background: #374e45;
+}
+
+button {
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+    font-size: 15px;
+    padding: 4px 0px;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.55);
+}
+
+button:active {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+.week {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 4px;
+}
+
+.day {
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: min-content;
+    row-gap: 10px;
+}
+
+.day .required_minutes_red {
+    color: rgba(255, 72, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 4px 0px;
+}
+
+.day .required_minutes_green {
+    color: rgba(0, 255, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 4px 0px;
+}
+
+.day .required_minutes_white {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 4px 0px;
+}
+.tasks {
+    display: grid;
+    row-gap: 8px;
+}
+
+.task {
+    background-color: rgba(255, 255, 255, 0.1);
+    display: grid;
+    padding: 4px;
+    grid-template-rows: repeat(2, 1fr);
+    row-gap: 4px;
+}
+
+.task input {
+    color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(0, 0, 0, 0.3);
+    border:  none;
+}
+
+.task input:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.task .top_row {
+    display: grid;
+    grid-template-columns: 1fr 3fr min-content;
+    column-gap: 4px;
+}
+
+.task .top_row .project {
+    min-width: 30px;
+}
+
+.task .top_row .comment {
+    min-width: 90px;
+}
+
+.task .top_row .close_button {
+    background-color: rgba(0, 0, 0, 0);
+    padding: 0px 4px;
+}
+
+.task .top_row .close_button:hover {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.task .bottom_row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 4px;
+}
+
+.loadSave {
+    display: grid;
+    margin: 20px 4px;
+    grid-template-columns: 30% auto auto auto 30%;
+    column-gap: 4px;
+}
+
+.loadSave .load {
+    grid-column: 2;
+}
+
+.loadSave .save {
+    grid-column: 3;
+}
+
+.loadSave .clear {
+    grid-column: 4;
+}
