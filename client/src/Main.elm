@@ -1,9 +1,12 @@
+module Main exposing (..)
+
 import Browser
-import Html exposing (Html, button, div, input, text, time)
+import Html exposing (Html, button, div, li, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 
-main : Program Encode.Value Model Msg
+
+main : Program () Model Msg
 main =
     Browser.element
         { init = init
@@ -14,7 +17,7 @@ main =
 
 
 type Msg
-    = EmptyMessage
+    = ShutDown
 
 
 
@@ -22,12 +25,13 @@ type Msg
 
 
 type alias Model =
-    {
-    }
+    {}
 
-init : ( Model, Cmd Msg )
-init 
-    ({}, Msg.none)
+
+init : () -> ( Model, Cmd Msg )
+init () =
+    ( {}, Cmd.none )
+
 
 
 {- view -}
@@ -36,10 +40,9 @@ init
 view : Model -> Html Msg
 view model =
     li []
-        [
-            [ button [ onClick Save ] [ text "shut down" ]
-            ]
+        [ button [ onClick ShutDown ] [ text "shut down" ]
         ]
+
 
 
 {- update -}
@@ -48,9 +51,7 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        EmptyMessage ->
-            (model
-            , msg.none
+        ShutDown ->
+            ( model
+            , Cmd.none
             )
-
-

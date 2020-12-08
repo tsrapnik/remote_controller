@@ -14,21 +14,10 @@
   <script src="script.js"></script>
   <script>
     try {
-      //extract stored data from previous sessions.
-      var storedData = localStorage.getItem("elm-model");
-      var flags = storedData ? JSON.parse(storedData) : null;
-
       //load elm app, passing in stored data.
       var app = Elm.Main.init({
-        node: document.getElementById("elm"),
-        flags: flags
+        node: document.getElementById("elm")
       });
-
-      //listen for commands from the "setStorage" port. turn the data into a
-      //string and put it in localStorage.
-      app.ports.setStorage.subscribe(function(state) {
-        localStorage.setItem("elm-model", JSON.stringify(state))
-      })
     }
     catch (e) {
       //display initialization errors (e.g. bad flags, infinite recursion)
