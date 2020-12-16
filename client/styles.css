@@ -48,4 +48,5 @@ li {
     display: grid;
     justify-content: center;
     align-content: center;
+    grid-gap: 10px;
 }

@@ -24,6 +24,8 @@ type Msg
 
 type RemoteCommand
     = ShutDown
+    | Brightness50
+    | Brightness0
 
 
 
@@ -47,6 +49,8 @@ view : Model -> Html Msg
 view model =
     li []
         [ button [ onClick (PostCommand ShutDown) ] [ text "shut down" ]
+        , button [ onClick (PostCommand Brightness50) ] [ text "brightness 50" ]
+        , button [ onClick (PostCommand Brightness0) ] [ text "brightness 0" ]
         ]
 
 
@@ -75,7 +79,7 @@ update msg model =
 postCommand : RemoteCommand -> Cmd Msg
 postCommand remoteCommand =
     Http.post
-        { url = "http://192.168.1.156/"
+        { url = "http://192.168.1.6/"
         , body = Http.stringBody "text/plain" (remoteCommandToString remoteCommand)
         , expect = Http.expectWhatever CommandPosted
         }
@@ -90,3 +94,7 @@ remoteCommandToString remoteCommand =
     case remoteCommand of
         ShutDown ->
             "shutdown"
+        Brightness50 ->
+            "brightness_50"
+        Brightness0 ->
+            "brightness_0"
