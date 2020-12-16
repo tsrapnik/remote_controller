@@ -24,8 +24,10 @@ type Msg
 
 type RemoteCommand
     = ShutDown
+    | Brightness100
     | Brightness50
     | Brightness0
+    | ShutdownMonitor
 
 
 
@@ -49,8 +51,10 @@ view : Model -> Html Msg
 view model =
     li []
         [ button [ onClick (PostCommand ShutDown) ] [ text "shut down" ]
+        , button [ onClick (PostCommand Brightness100) ] [ text "brightness 100" ]
         , button [ onClick (PostCommand Brightness50) ] [ text "brightness 50" ]
         , button [ onClick (PostCommand Brightness0) ] [ text "brightness 0" ]
+        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "shutdown monitor" ]
         ]
 
 
@@ -94,7 +98,11 @@ remoteCommandToString remoteCommand =
     case remoteCommand of
         ShutDown ->
             "shutdown"
+        Brightness100 ->
+            "brightness_100"
         Brightness50 ->
             "brightness_50"
         Brightness0 ->
             "brightness_0"
+        ShutdownMonitor ->
+            "shutdown_monitor"

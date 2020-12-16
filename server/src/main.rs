@@ -33,8 +33,18 @@ fn execute_command(command: rocket::Data) -> () {
     if let Ok(command) = str::from_utf8(command.peek()) {
         match command {
             "shutdown" => {
-                println!("shutting down.");
-                // system_shutdown::shutdown();
+                if system_shutdown::shutdown().is_err() {
+                    println!("shutting down failed.");
+                }
+            }
+            "brightness_100" => {
+                let message: &[u8] = &[
+                    0xa6, 0x01, 0x00, 0x00, 0x00, 0x0a, 0x01, 0x32, 0x64, 0x37, 0x32, 0x14, 0x32,
+                    0x32, 0x01, 0xea,
+                ];
+                if send_tcp_message(message).is_err() {
+                    println!("changing brightness failed.")
+                }
             }
             "brightness_50" => {
                 let message: &[u8] = &[
@@ -52,6 +62,12 @@ fn execute_command(command: rocket::Data) -> () {
                 ];
                 if send_tcp_message(message).is_err() {
                     println!("changing brightness failed.")
+                }
+            }
+            "shutdown_monitor" => {
+                let message: &[u8] = &[0xa6, 0x01, 0x00, 0x00, 0x00, 0x04, 0x01, 0x18, 0x01, 0xbb];
+                if send_tcp_message(message).is_err() {
+                    println!("shutting down monitor failed.")
                 }
             }
             _ => {
