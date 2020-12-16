@@ -83,7 +83,7 @@ update msg model =
 postCommand : RemoteCommand -> Cmd Msg
 postCommand remoteCommand =
     Http.post
-        { url = "http://192.168.1.6/"
+        { url = "http://192.168.1.2/"
         , body = Http.stringBody "text/plain" (remoteCommandToString remoteCommand)
         , expect = Http.expectWhatever CommandPosted
         }
