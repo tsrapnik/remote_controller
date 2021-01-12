@@ -8,14 +8,14 @@
             "request": "launch",
             "type": "edge",
             "name": "launch edge",
-            "file": "${workspaceFolder}/index.html"
+            "file": "${workspaceFolder}/client/index.html"
         },
         {
             "type": "firefox",
             "request": "launch",
             "reAttach": true,
             "name": "launch firefox",
-            "file": "${workspaceFolder}/index.html"
+            "file": "${workspaceFolder}/client/index.html"
         }
     ]
 }
