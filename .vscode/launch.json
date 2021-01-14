@@ -8,14 +8,16 @@
             "name": "launch client edge",
             "request": "launch",
             "type": "edge",
-            "file": "${workspaceFolder}/client/index.html"
+            "file": "${workspaceFolder}/client/index.html",
+            "preLaunchTask": "build debug client",
         },
         {
             "name": "launch client firefox",
             "request": "launch",
             "type": "firefox",
             "reAttach": true,
-            "file": "${workspaceFolder}/client/index.html"
+            "file": "${workspaceFolder}/client/index.html",
+            "preLaunchTask": "build debug client",
         },
         {
             "name": "launch pc server windows",
@@ -26,7 +28,8 @@
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}/pc_server",
             "environment": [],
-            "externalConsole": true
+            "externalConsole": true,
+            "preLaunchTask": "build debug pc server",
         },
         {
             "name": "launch pc server linux",
@@ -35,6 +38,7 @@
             "program": "${workspaceRoot}/pc_server/target/debug/remote_controller",
             "args": [],
             "cwd": "${workspaceRoot}/pc_server",
+            "preLaunchTask": "build debug pc server",
         },
     ]
 }
