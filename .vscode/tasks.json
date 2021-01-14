@@ -1,27 +1,59 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "type": "shell",
-            "command": "elm make src/Main.elm --output=script.js",
-            "problemMatcher": [],
-            "group": {
-              "kind": "build",
-              "isDefault": false
-            }
-        },
-        {
-            "label": "build debug",
-            "type": "shell",
-            "command": "elm make src/Main.elm --output=script.js --debug",
-            "problemMatcher": [],
-            "group": {
-              "kind": "build",
-              "isDefault": false
-            }
-        }
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build client",
+      "type": "shell",
+      "options": {
+        "cwd": "./client"
+      },
+      "command": "elm make src/Main.elm --output=script.js",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "build debug client",
+      "type": "shell",
+      "options": {
+        "cwd": "./client"
+      },
+      "command": "elm make src/Main.elm --output=script.js --debug",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+      {
+      "label": "build pc server",
+      "type": "shell",
+      "options": {
+        "cwd": "./pc_server"
+      },
+      "command": "cargo build --release",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "build debug pc server",
+      "type": "shell",
+      "options": {
+        "cwd": "./pc_server"
+      },
+      "command": "cargo build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+  ]
 }

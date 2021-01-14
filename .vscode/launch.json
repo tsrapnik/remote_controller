@@ -5,17 +5,36 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "launch client edge",
             "request": "launch",
             "type": "edge",
-            "name": "launch edge",
             "file": "${workspaceFolder}/client/index.html"
         },
         {
-            "type": "firefox",
+            "name": "launch client firefox",
             "request": "launch",
+            "type": "firefox",
             "reAttach": true,
-            "name": "launch firefox",
             "file": "${workspaceFolder}/client/index.html"
-        }
+        },
+        {
+            "name": "launch pc server windows",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/pc_server/target/debug/remote_controller.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/pc_server",
+            "environment": [],
+            "externalConsole": true
+        },
+        {
+            "name": "launch pc server linux",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceRoot}/pc_server/target/debug/remote_controller",
+            "args": [],
+            "cwd": "${workspaceRoot}/pc_server",
+        },
     ]
 }

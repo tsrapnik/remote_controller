@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 rocket = "0.4.6"
 system_shutdown = "3.0.0"
+open = "1.4.0"
