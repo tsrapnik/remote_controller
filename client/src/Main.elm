@@ -28,6 +28,9 @@ type RemoteCommand
     | Brightness50
     | Brightness0
     | ShutdownMonitor
+    | Netflix
+    | VrtNuTvGuide
+    | VrtNuLive
 
 
 
@@ -55,6 +58,9 @@ view model =
         , button [ onClick (PostCommand Brightness50) ] [ text "brightness 50" ]
         , button [ onClick (PostCommand Brightness0) ] [ text "brightness 0" ]
         , button [ onClick (PostCommand ShutdownMonitor) ] [ text "shutdown monitor" ]
+        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "netflix" ]
+        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "vrt nu tv guide" ]
+        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "vrt nu live" ]
         ]
 
 
@@ -106,3 +112,9 @@ remoteCommandToString remoteCommand =
             "brightness_0"
         ShutdownMonitor ->
             "shutdown_monitor"
+        Netflix ->
+            "netflix"
+        VrtNuTvGuide ->
+            "vrt_nu_tv_guide"
+        VrtNuLive ->
+            "vrt_nu_live"

@@ -24,10 +24,18 @@ fn load_script() -> Option<response::NamedFile> {
 
 #[post("/", format = "text/plain", data = "<command>")]
 fn execute_command(command: rocket::Data) -> () {
+
     fn send_tcp_message(message: &[u8]) -> Result<(), io::Error> {
         let mut stream = TcpStream::connect("192.168.1.5:5000")?;
         stream.write(message)?;
         Ok(())
+    }
+
+    fn open_site(site: &str){
+        let result = open::that(site);
+        if let Err(error) = result {
+            println!("Failed to open \"{}\". error: \"{}\"", site, error);
+        }
     }
 
     if let Ok(command) = str::from_utf8(command.peek()) {
@@ -69,6 +77,15 @@ fn execute_command(command: rocket::Data) -> () {
                 if send_tcp_message(message).is_err() {
                     println!("shutting down monitor failed.")
                 }
+            }
+            "netflix" => {
+                open_site("https://netflix.com");
+            }
+            "vrt_nu_tv_guide" => {
+                open_site("https://www.vrt.be/vrtnu/tv-gids/");
+            }
+            "vrt_nu_live" => {
+                open_site("https://www.vrt.be/vrtnu/livestream/");
             }
             _ => {
                 println!("unknown command: \"{}\"", command);
