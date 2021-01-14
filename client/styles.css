@@ -50,3 +50,7 @@ li {
     align-content: center;
     grid-gap: 10px;
 }
+
+.server_ip {
+    visibility: hidden;
+}
