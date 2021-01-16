@@ -7,7 +7,7 @@ import Html.Events exposing (onClick, onInput)
 import Http
 
 
-main : Program () Model Msg
+main : Program String Model Msg
 main =
     Browser.element
         { init = init
@@ -38,12 +38,12 @@ type RemoteCommand
 
 
 type alias Model =
-    {}
+    { server_ip : String }
 
 
-init : () -> ( Model, Cmd Msg )
-init () =
-    ( {}, Cmd.none )
+init : String -> ( Model, Cmd Msg )
+init server_ip =
+    ( { server_ip = server_ip }, Cmd.none )
 
 
 
@@ -58,9 +58,9 @@ view model =
         , button [ onClick (PostCommand Brightness50) ] [ text "brightness 50" ]
         , button [ onClick (PostCommand Brightness0) ] [ text "brightness 0" ]
         , button [ onClick (PostCommand ShutdownMonitor) ] [ text "shutdown monitor" ]
-        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "netflix" ]
-        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "vrt nu tv guide" ]
-        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "vrt nu live" ]
+        , button [ onClick (PostCommand Netflix) ] [ text "netflix" ]
+        , button [ onClick (PostCommand VrtNuTvGuide) ] [ text "vrt nu tv guide" ]
+        , button [ onClick (PostCommand VrtNuLive) ] [ text "vrt nu live" ]
         ]
 
 
@@ -73,7 +73,7 @@ update msg model =
     case msg of
         PostCommand command ->
             ( model
-            , postCommand command
+            , postCommand command model.server_ip
             )
 
         CommandPosted result ->
@@ -86,10 +86,10 @@ update msg model =
 {- http -}
 
 
-postCommand : RemoteCommand -> Cmd Msg
-postCommand remoteCommand =
+postCommand : RemoteCommand -> String -> Cmd Msg
+postCommand remoteCommand server_ip =
     Http.post
-        { url = "http://192.168.1.2/"
+        { url = "http://" ++ server_ip
         , body = Http.stringBody "text/plain" (remoteCommandToString remoteCommand)
         , expect = Http.expectWhatever CommandPosted
         }
@@ -104,17 +104,24 @@ remoteCommandToString remoteCommand =
     case remoteCommand of
         ShutDown ->
             "shutdown"
+
         Brightness100 ->
             "brightness_100"
+
         Brightness50 ->
             "brightness_50"
+
         Brightness0 ->
             "brightness_0"
+
         ShutdownMonitor ->
             "shutdown_monitor"
+
         Netflix ->
             "netflix"
+
         VrtNuTvGuide ->
             "vrt_nu_tv_guide"
+
         VrtNuLive ->
             "vrt_nu_live"

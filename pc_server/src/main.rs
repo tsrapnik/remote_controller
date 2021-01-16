@@ -3,18 +3,13 @@
 #[macro_use]
 extern crate rocket;
 
-use rocket::{response, State};
+use rocket::response;
 use std::{io, io::Write, net::TcpStream, str};
 use system_shutdown;
 
 #[get("/")]
 fn load_html() -> Option<response::NamedFile> {
     response::NamedFile::open("../client/index.html").ok()
-}
-
-#[get("/server_ip")]
-fn load_server_ip(server_ip: State<String>) -> String {
-    server_ip.clone()
 }
 
 #[get("/styles.css")]
@@ -99,22 +94,10 @@ fn execute_command(command: rocket::Data) -> () {
 }
 
 fn main() {
-    // Create server.
-    let rocket = rocket::ignite().mount(
-        "/",
-        routes![
-            load_html,
-            load_server_ip,
-            load_styles,
-            load_script,
-            execute_command
-        ],
-    );
-
-    // Retrieve ip address of server and store it as managed state, so the client can retrieve it.
-    let server_ip = rocket.config().address.clone();
-    let rocket = rocket.manage(server_ip);
-
-    // Launch server.
-    rocket.launch();
+    rocket::ignite()
+        .mount(
+            "/",
+            routes![load_html, load_styles, load_script, execute_command],
+        )
+        .launch();
 }
