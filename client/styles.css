@@ -51,6 +51,16 @@ li {
     grid-gap: 10px;
 }
 
+h1 {
+    color: white;
+    font-size: min(4vw, 4vh);
+    font-weight: normal;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+}
+
 .server_ip {
     visibility: hidden;
 }

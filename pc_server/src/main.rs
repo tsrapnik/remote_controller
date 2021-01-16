@@ -81,9 +81,6 @@ fn execute_command(command: Json<Command>) -> () {
         Command::VrtNuLive => {
             open_site("https://www.vrt.be/vrtnu/livestream/");
         }
-        _ => {
-            println!("unknown command");
-        }
     }
 }
 
