@@ -24,10 +24,8 @@ type Msg
 
 
 type RemoteCommand
-    = ShutDown
-    | Brightness100
-    | Brightness50
-    | Brightness0
+    = Shutdown
+    | Brightness Int
     | ShutdownMonitor
     | Netflix
     | VrtNuTvGuide
@@ -54,11 +52,9 @@ init server_ip =
 view : Model -> Html Msg
 view model =
     li []
-        [ button [ onClick (PostCommand ShutDown) ] [ text "shut down" ]
-        , button [ onClick (PostCommand Brightness100) ] [ text "brightness 100" ]
-        , button [ onClick (PostCommand Brightness50) ] [ text "brightness 50" ]
-        , button [ onClick (PostCommand Brightness0) ] [ text "brightness 0" ]
-        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "shutdown monitor" ]
+        [ button [ onClick (PostCommand Shutdown) ] [ text "shut down" ]
+        , button [ onClick (PostCommand (Brightness 100)) ] [ text "brightness 100" ]
+        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "Shutdown monitor" ]
         , button [ onClick (PostCommand Netflix) ] [ text "netflix" ]
         , button [ onClick (PostCommand VrtNuTvGuide) ] [ text "vrt nu tv guide" ]
         , button [ onClick (PostCommand VrtNuLive) ] [ text "vrt nu live" ]
@@ -103,26 +99,20 @@ postCommand remoteCommand server_ip =
 remoteCommandToJson : RemoteCommand -> Encode.Value
 remoteCommandToJson remoteCommand =
     case remoteCommand of
-        ShutDown ->
-            Encode.object[("command", Encode.string "shutdown")]
+        Shutdown ->
+            Encode.object [ ( "Shutdown", Encode.null ) ]
 
-        Brightness100 ->
-            Encode.object[("command", Encode.string "brightness_100")]
-
-        Brightness50 ->
-            Encode.object[("command", Encode.string "brightness_50")]
-
-        Brightness0 ->
-            Encode.object[("command", Encode.string "brightness_0")]
+        Brightness value ->
+            Encode.object [ ( "Brightness", Encode.object [ ( "value", Encode.int value ) ] ) ]
 
         ShutdownMonitor ->
-            Encode.object[("command", Encode.string "shutdown_monitor")]
+            Encode.object [ ( "ShutdownMonitor", Encode.null ) ]
 
         Netflix ->
-            Encode.object[("command", Encode.string "netflix")]
+            Encode.object [ ( "Netflix", Encode.null ) ]
 
         VrtNuTvGuide ->
-            Encode.object[("command", Encode.string "vrt_nu_tv_guide")]
+            Encode.object [ ( "VrtNuTvGuide", Encode.null ) ]
 
         VrtNuLive ->
-            Encode.object[("command", Encode.string "vrt_nu_live")]
+            Encode.object [ ( "VrtNuLive", Encode.null ) ]
