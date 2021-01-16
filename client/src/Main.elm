@@ -5,6 +5,7 @@ import Html exposing (Html, button, div, li, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Http
+import Json.Encode as Encode
 
 
 main : Program String Model Msg
@@ -90,7 +91,7 @@ postCommand : RemoteCommand -> String -> Cmd Msg
 postCommand remoteCommand server_ip =
     Http.post
         { url = "http://" ++ server_ip
-        , body = Http.stringBody "text/plain" (remoteCommandToString remoteCommand)
+        , body = Http.jsonBody (remoteCommandToJson remoteCommand)
         , expect = Http.expectWhatever CommandPosted
         }
 
@@ -99,29 +100,29 @@ postCommand remoteCommand server_ip =
 {- conversions -}
 
 
-remoteCommandToString : RemoteCommand -> String
-remoteCommandToString remoteCommand =
+remoteCommandToJson : RemoteCommand -> Encode.Value
+remoteCommandToJson remoteCommand =
     case remoteCommand of
         ShutDown ->
-            "shutdown"
+            Encode.object[("command", Encode.string "shutdown")]
 
         Brightness100 ->
-            "brightness_100"
+            Encode.object[("command", Encode.string "brightness_100")]
 
         Brightness50 ->
-            "brightness_50"
+            Encode.object[("command", Encode.string "brightness_50")]
 
         Brightness0 ->
-            "brightness_0"
+            Encode.object[("command", Encode.string "brightness_0")]
 
         ShutdownMonitor ->
-            "shutdown_monitor"
+            Encode.object[("command", Encode.string "shutdown_monitor")]
 
         Netflix ->
-            "netflix"
+            Encode.object[("command", Encode.string "netflix")]
 
         VrtNuTvGuide ->
-            "vrt_nu_tv_guide"
+            Encode.object[("command", Encode.string "vrt_nu_tv_guide")]
 
         VrtNuLive ->
-            "vrt_nu_live"
+            Encode.object[("command", Encode.string "vrt_nu_live")]
