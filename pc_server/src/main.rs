@@ -56,32 +56,16 @@ fn execute_command(command: Json<Command>) -> () {
             }
         }
         Command::Brightness {value} => {
-            let message: &[u8] = &[
-                0xa6, 0x01, 0x00, 0x00, 0x00, 0x0a, 0x01, 0x32, 0x64, 0x37, 0x32, 0x14, 0x32, 0x32,
-                0x01, 0xea,
+            let mut message = [
+                0xa6u8, 0x01, 0x00, 0x00, 0x00, 0x0a, 0x01, 0x32, value, 0x37, 0x32, 0x14, 0x32, 0x32,
+                0x01, 0xea, 0x00
             ];
-            if send_tcp_message(message).is_err() {
+            let checksum = message[.. message.len() - 1].iter().fold(0x00, |acc, x| acc ^ x);
+            message[message.len() - 1] = checksum;
+            if send_tcp_message(&message).is_err() {
                 println!("changing brightness failed.")
             }
         }
-        // "brightness_50" => {
-        //     let message: &[u8] = &[
-        //         0xa6, 0x01, 0x00, 0x00, 0x00, 0x0a, 0x01, 0x32, 0x37, 0x37, 0x32, 0x14, 0x32, 0x32,
-        //         0x01, 0xb9,
-        //     ];
-        //     if send_tcp_message(message).is_err() {
-        //         println!("changing brightness failed.")
-        //     }
-        // }
-        // "brightness_0" => {
-        //     let message: &[u8] = &[
-        //         0xa6, 0x01, 0x00, 0x00, 0x00, 0x0a, 0x01, 0x32, 0x00, 0x37, 0x32, 0x14, 0x32, 0x32,
-        //         0x01, 0x8e,
-        //     ];
-        //     if send_tcp_message(message).is_err() {
-        //         println!("changing brightness failed.")
-        //     }
-        // }
         Command::ShutdownMonitor => {
             let message: &[u8] = &[0xa6, 0x01, 0x00, 0x00, 0x00, 0x04, 0x01, 0x18, 0x01, 0xbb];
             if send_tcp_message(message).is_err() {
