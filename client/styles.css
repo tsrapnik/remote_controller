@@ -24,6 +24,8 @@ body {
 button {
     width: 35vw;
     height: 10vh;
+    min-width: 100px;
+    min-height: 30px;
 
     background-color: rgba(255, 255, 255, 0.4);
     border: none;
@@ -54,6 +56,9 @@ li {
 div {
     width: 35vw;
     height: 10vh;
+    min-width: 100px;
+    min-height: 30px;
+
     padding: 0 5px;
     background-color: rgba(255, 255, 255, 0.4);
 }
@@ -73,8 +78,8 @@ input[type=range] {
 }
 
 input[type='range']::-webkit-slider-thumb {
-    width: 20px;
-    height: 20px;
+    width: min(2vw, 2vh);
+    height: min(2vw, 2vh);
     -webkit-appearance: none;
     background: rgba(255, 255, 255, 0.6);
   }
