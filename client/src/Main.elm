@@ -53,15 +53,17 @@ view : Model -> Html Msg
 view model =
     li []
         [ button [ onClick (PostCommand Shutdown) ] [ text "shut down" ]
-        , h1 [] [ text "monitor brightness" ]
-        , input
-            [ type_ "range"
-            , Html.Attributes.min "0"
-            , Html.Attributes.max "100"
-            , value <| String.fromInt model.brightness
-            , onInput (\newValue -> PostCommand (Brightness newValue))
+        , div []
+            [ h1 [] [ text "monitor brightness" ]
+            , input
+                [ type_ "range"
+                , Html.Attributes.min "0"
+                , Html.Attributes.max "100"
+                , value <| String.fromInt model.brightness
+                , onInput (\newValue -> PostCommand (Brightness newValue))
+                ]
+                []
             ]
-            []
         , button [ onClick (PostCommand ShutdownMonitor) ] [ text "shutdown monitor" ]
         , button [ onClick (PostCommand Netflix) ] [ text "netflix" ]
         , button [ onClick (PostCommand VrtNuTvGuide) ] [ text "vrt nu tv guide" ]
