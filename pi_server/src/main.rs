@@ -6,6 +6,8 @@ extern crate rocket;
 mod command;
 
 use command::Command;
+use futures::executor::block_on;
+use hyper::{Body, Client, Method, Request};
 use rocket::response;
 use rocket_contrib::json::Json;
 use std::{io, io::Write, net::TcpStream};
@@ -48,8 +50,33 @@ fn execute_command(command: Json<Command>) -> () {
         }
     }
 
-    fn send_to_pc(command: Command) -> () {
+    async fn send_to_pc(command: Command) -> () {
+        // Keep sending until it succeeds or maximum tries reached.
+        let max_tries = 10usize;
+        for _ in 0..max_tries {
+            let command = serde_json::to_string(&command);
+            if command.is_err() {
+                break;
+            }
+            let command = command.unwrap();
+            let request = Request::builder()
+                .method(Method::POST)
+                .uri("http://192.168.1.25") //TODO
+                .header("content-type", "application/json")
+                .body(Body::from(command));
+            if request.is_err() {
+                break;
+            }
+            let request = request.unwrap();
+            let client = Client::new();
+            let response = client.request(request).await;
+            if response.is_ok() {
+                return;
+            }
+        }
 
+        // If previous loop never returned we failed to get a proper response.
+        println!("Sending command failed.");
     }
 
     let command = command.into_inner();
@@ -81,7 +108,8 @@ fn execute_command(command: Json<Command>) -> () {
             wake_monitor();
             wake_pc();
 
-            send_to_pc(command);
+            let future = send_to_pc(command);
+            block_on(future);
         }
         // TODO => {
         //     // These commands are all meant for the pc (with monitor turned off). So we check the pc
@@ -90,13 +118,15 @@ fn execute_command(command: Json<Command>) -> () {
         //     // Always wake, if already awake the pc just ignores the wol packet.
         //     wake_pc();
 
-        //     send_to_pc(command);
+        //     let future = send_to_pc(command);
+        //     block_on(future);
         // }
         Command::Shutdown => {
             // This command is meant to turn of the pc. So just send without checking if it arrives,
             // since if the pc is already off, we won't get any response.
 
-            send_to_pc(command);
+            let future = send_to_pc(command);
+            block_on(future);
         }
     }
 }
