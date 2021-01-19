@@ -40,5 +40,26 @@
             "cwd": "${workspaceRoot}/pc_server",
             "preLaunchTask": "build debug pc server",
         },
+        {
+            "name": "launch pi server windows",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/pi_server/target/debug/remote_controller.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/pi_server",
+            "environment": [],
+            "externalConsole": true,
+            "preLaunchTask": "build debug pi server",
+        },
+        {
+            "name": "launch pi server linux",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceRoot}/pi_server/target/debug/remote_controller",
+            "args": [],
+            "cwd": "${workspaceRoot}/pi_server",
+            "preLaunchTask": "build debug pi server",
+        },
     ]
 }

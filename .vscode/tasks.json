@@ -28,8 +28,8 @@
         "kind": "build",
         "isDefault": false
       }
-    }
-      {
+    },
+    {
       "label": "build pc server",
       "type": "shell",
       "options": {
@@ -54,6 +54,32 @@
         "kind": "build",
         "isDefault": false
       }
-    }
+    },
+    {
+      "label": "build pi server",
+      "type": "shell",
+      "options": {
+        "cwd": "./pi_server"
+      },
+      "command": "cargo build --release",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "build debug pi server",
+      "type": "shell",
+      "options": {
+        "cwd": "./pi_server"
+      },
+      "command": "cargo build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
   ]
 }
