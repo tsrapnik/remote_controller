@@ -6,8 +6,6 @@ extern crate rocket;
 mod command;
 
 use command::Command;
-use futures::executor::block_on;
-use hyper::{Body, Client, Method, Request};
 use rocket::response;
 use rocket_contrib::json::Json;
 use std::{io, io::Write, net::TcpStream};
@@ -31,50 +29,37 @@ fn load_script() -> Option<response::NamedFile> {
 #[post("/", format = "application/json", data = "<command>")]
 fn execute_command(command: Json<Command>) -> () {
     fn send_tcp_message(message: &[u8]) -> Result<(), io::Error> {
-        let mut stream = TcpStream::connect("192.168.1.5:5000")?;
+        let mut stream = TcpStream::connect("192.168.1.5:5000")?; //TODO: put address in config file.
         stream.write(message)?;
         Ok(())
     }
 
     fn wake_pc() {
-        let wol_pc = WolPacket::from_string("4c:cc:6a:b0:b4:8c", ':');
+        let wol_pc = WolPacket::from_string("4c:cc:6a:b0:b4:8c", ':'); //TODO: put address in config file.
         if wol_pc.send_magic().is_err() {
             println!("waking pc failed.")
         }
     }
 
     fn wake_monitor() {
-        let wol_monitor = WolPacket::from_string("18:65:71:9f:a4:27", ':');
+        let wol_monitor = WolPacket::from_string("18:65:71:9f:a4:27", ':'); //TODO: put address in config file.
         if wol_monitor.send_magic().is_err() {
             println!("waking monitor failed.")
         }
     }
 
-    async fn send_to_pc(command: Command) -> () {
+    fn send_to_pc(command: Command) -> () {
         // Keep sending until it succeeds or maximum tries reached.
         let max_tries = 10usize;
         for _ in 0..max_tries {
-            let command = serde_json::to_string(&command);
-            if command.is_err() {
-                break;
-            }
-            let command = command.unwrap();
-            let request = Request::builder()
-                .method(Method::POST)
-                .uri("http://192.168.1.25") //TODO
-                .header("content-type", "application/json")
-                .body(Body::from(command));
-            if request.is_err() {
-                break;
-            }
-            let request = request.unwrap();
-            let client = Client::new();
-            let response = client.request(request).await;
+            let response = ureq::post("http://localhost:81/") //TODO: put address in config file.
+                .send_json(serde_json::to_value(command.clone()).unwrap());
+    
             if response.is_ok() {
                 return;
             }
         }
-
+    
         // If previous loop never returned we failed to get a proper response.
         println!("Sending command failed.");
     }
@@ -108,8 +93,7 @@ fn execute_command(command: Json<Command>) -> () {
             wake_monitor();
             wake_pc();
 
-            let future = send_to_pc(command);
-            block_on(future);
+            send_to_pc(command);
         }
         // TODO => {
         //     // These commands are all meant for the pc (with monitor turned off). So we check the pc
@@ -118,15 +102,13 @@ fn execute_command(command: Json<Command>) -> () {
         //     // Always wake, if already awake the pc just ignores the wol packet.
         //     wake_pc();
 
-        //     let future = send_to_pc(command);
-        //     block_on(future);
+        //     send_to_pc(command);
         // }
         Command::Shutdown => {
             // This command is meant to turn of the pc. So just send without checking if it arrives,
             // since if the pc is already off, we won't get any response.
 
-            let future = send_to_pc(command);
-            block_on(future);
+            send_to_pc(command);
         }
     }
 }
