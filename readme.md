@@ -70,3 +70,9 @@ If you want to automatically start the service at boot use following.
 ```
 sudo systemctl enable myservice
 ```
+
+When running ubuntu use following command to allow the server through the firewall.
+
+```
+sudo ufw allow 80/tcp
+```
