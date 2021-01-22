@@ -52,7 +52,7 @@ fn execute_command(command: Json<Command>) -> () {
         // Keep sending until it succeeds or maximum tries reached.
         let max_tries = 10usize;
         for _ in 0..max_tries {
-            let response = ureq::post("http://localhost:81/") //TODO: put address in config file.
+            let response = ureq::post("http://192.168.1.2/") //TODO: put address in config file.
                 .send_json(serde_json::to_value(command.clone()).unwrap());
     
             if response.is_ok() {
