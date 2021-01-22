@@ -54,9 +54,14 @@ fn execute_command(command: Json<Command>) -> () {
         for _ in 0..max_tries {
             let response = ureq::post("http://192.168.1.2/") //TODO: put address in config file.
                 .send_json(serde_json::to_value(command.clone()).unwrap());
-    
-            if response.is_ok() {
-                return;
+
+            match response {
+                Ok(_) => {
+                    return;
+                }
+                Err(error) => {
+                    println!("{}", error);
+                }
             }
         }
     
