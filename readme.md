@@ -28,11 +28,12 @@ Write following to the file and save with ctrl+x and y.
 
 ```
 [Unit]
-Description=Example systemd service.
+Description=Server controls pc remotely.
 
 [Service]
 Type=simple
-ExecStart=/path_to_your_project_folder/server/target/release/remote_controller
+WorkingDirectory=/home/tsrapnik/projects/remote_controller/pc_server/target/release
+ExecStart=/home/tsrapnik/projects/remote_controller/pc_server/target/release/remote_controller
 
 [Install]
 WantedBy=multi-user.target
