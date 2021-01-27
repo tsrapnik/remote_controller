@@ -28,11 +28,11 @@ Write following to the file and save with ctrl+x and y.
 
 ```
 [Unit]
-Description=Server controls pc remotely.
+Description=remote controller
 
 [Service]
 Type=simple
-WorkingDirectory=/home/tsrapnik/projects/remote_controller/pc_server/target/release
+WorkingDirectory=/home/tsrapnik/projects/remote_controller/pc_server
 ExecStart=/home/tsrapnik/projects/remote_controller/pc_server/target/release/remote_controller
 
 [Install]
@@ -69,7 +69,7 @@ sudo systemctl restart remote_controller
 If you want to automatically start the service at boot use following.
 
 ```
-sudo systemctl enable myservice
+sudo systemctl enable remote_controller
 ```
 
 When running ubuntu use following command to allow the server through the firewall.
