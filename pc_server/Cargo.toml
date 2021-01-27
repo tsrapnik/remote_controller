@@ -11,5 +11,4 @@ rocket = "0.4.6"
 rocket_contrib = "0.4.6"
 serde = { version = "1.0.119", features = ["derive"] }
 system_shutdown = "3.0.0"
-open = "1.4.0"
 wakey = "0.1.2"

@@ -6,14 +6,21 @@ extern crate rocket;
 #[path = "../../pi_server/src/command.rs"] // Use same definition as in pi_server.
 mod command;
 
-use rocket_contrib::json::Json;
-use system_shutdown;
 use command::Command;
+use rocket_contrib::json::Json;
+use std::process;
+use system_shutdown;
 
 #[post("/", format = "application/json", data = "<command>")]
 fn execute_command(command: Json<Command>) -> () {
     fn open_site(site: &str) {
-        let result = open::that(site);
+        let result = process::Command::new("sudo")
+            .arg("-u")
+            .arg("tsrapnik")
+            .arg("chromium")
+            .arg(site)
+            .spawn();
+
         if let Err(error) = result {
             println!("Failed to open \"{}\". error: \"{}\"", site, error);
         }
@@ -26,7 +33,9 @@ fn execute_command(command: Json<Command>) -> () {
             }
         }
         Command::Netflix => {
+            println!("before");
             open_site("https://netflix.com");
+            println!("after");
         }
         Command::VrtNuTvGuide => {
             open_site("https://www.vrt.be/vrtnu/tv-gids/");
@@ -42,9 +51,6 @@ fn execute_command(command: Json<Command>) -> () {
 
 fn main() {
     rocket::ignite()
-        .mount(
-            "/",
-            routes![execute_command],
-        )
+        .mount("/", routes![execute_command])
         .launch();
 }
