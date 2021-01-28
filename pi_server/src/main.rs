@@ -74,7 +74,7 @@ fn execute_command(command: Json<Command>) -> () {
         Command::Brightness { value } => {
             let mut message = [
                 0xa6u8, 0x01, 0x00, 0x00, 0x00, 0x0a, 0x01, 0x32, value, 0x37, 0x32, 0x14, 0x32,
-                0x32, 0x01, 0xea, 0x00,
+                0x32, 0x01, 0x00,
             ];
             let checksum = message[..message.len() - 1]
                 .iter()
