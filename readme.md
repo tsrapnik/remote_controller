@@ -32,6 +32,7 @@ Description=Server controls pc remotely.
 
 [Service]
 Type=simple
+Environment=DISPLAY=:0
 WorkingDirectory=/home/tsrapnik/projects/remote_controller/pc_server/target/release
 ExecStart=/home/tsrapnik/projects/remote_controller/pc_server/target/release/remote_controller
 
