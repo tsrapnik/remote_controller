@@ -14,10 +14,7 @@ use system_shutdown;
 #[post("/", format = "application/json", data = "<command>")]
 fn execute_command(command: Json<Command>) -> () {
     fn open_site(site: &str) {
-        let result = process::Command::new("sudo")
-            .arg("-u")
-            .arg("tsrapnik")
-            .arg("chromium")
+        let result = process::Command::new("chromium")
             .arg(site)
             .spawn();
 
@@ -27,10 +24,7 @@ fn execute_command(command: Json<Command>) -> () {
     }
 
     fn set_volume(volume: u8) -> () {
-        let result = process::Command::new("sudo")
-            .arg("-u")
-            .arg("tsrapnik")
-            .arg("amixer")
+        let result = process::Command::new("amixer")
             .arg("-D")
             .arg("pulse")
             .arg("sset")
@@ -44,10 +38,7 @@ fn execute_command(command: Json<Command>) -> () {
     }
 
     fn open_spotify() {
-        let result = process::Command::new("sudo")
-            .arg("-u")
-            .arg("tsrapnik")
-            .arg("spotify")
+        let result = process::Command::new("spotify")
             .spawn();
 
         if let Err(error) = result {
