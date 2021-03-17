@@ -40,7 +40,20 @@ fn execute_command(command: Json<Command>) -> () {
 
         if let Err(error) = result {
             println!("Failed to change volume. error: \"{}\"", error);
-        }}
+        }
+    }
+
+    fn open_spotify() {
+        let result = process::Command::new("sudo")
+            .arg("-u")
+            .arg("tsrapnik")
+            .arg("spotify")
+            .spawn();
+
+        if let Err(error) = result {
+            println!("Failed to open spotify. error: \"{}\"", error);
+        }
+    }
 
     match command.into_inner() {
         Command::Shutdown => {
@@ -48,7 +61,7 @@ fn execute_command(command: Json<Command>) -> () {
                 println!("Shutting down failed.");
             }
         }
-        Command::Volume { value }  => {
+        Command::Volume { value } => {
             set_volume(value);
         }
         Command::Netflix => {
@@ -61,7 +74,7 @@ fn execute_command(command: Json<Command>) -> () {
             open_site("https://www.vrt.be/vrtnu/livestream/");
         }
         Command::Spotify => {
-            println!("Spotify command not yet implemented.")
+            open_spotify();
         }
         _ => {
             println!("Not a pc command.")
