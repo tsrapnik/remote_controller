@@ -25,11 +25,13 @@ type Msg
 
 type RemoteCommand
     = Shutdown
-    | Brightness String
     | ShutdownMonitor
+    | Brightness String
+    | Volume String
     | Netflix
     | VrtNuTvGuide
     | VrtNuLive
+    | Spotify
 
 
 
@@ -37,12 +39,12 @@ type RemoteCommand
 
 
 type alias Model =
-    { server_ip : String, brightness : Int }
+    { server_ip : String, brightness : Int, volume : Int }
 
 
 init : String -> ( Model, Cmd Msg )
 init server_ip =
-    ( { server_ip = server_ip, brightness = 0 }, Cmd.none )
+    ( { server_ip = server_ip, brightness = 0, volume = 0 }, Cmd.none )
 
 
 
@@ -53,6 +55,7 @@ view : Model -> Html Msg
 view model =
     li []
         [ button [ onClick (PostCommand Shutdown) ] [ text "shut down" ]
+        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "shutdown monitor" ]
         , div []
             [ h1 [] [ text "monitor brightness" ]
             , input
@@ -64,10 +67,21 @@ view model =
                 ]
                 []
             ]
-        , button [ onClick (PostCommand ShutdownMonitor) ] [ text "shutdown monitor" ]
+        , div []
+            [ h1 [] [ text "volume" ]
+            , input
+                [ type_ "range"
+                , Html.Attributes.min "0"
+                , Html.Attributes.max "100"
+                , value <| String.fromInt model.volume
+                , onInput (\newValue -> PostCommand (Volume newValue))
+                ]
+                []
+            ]
         , button [ onClick (PostCommand Netflix) ] [ text "netflix" ]
         , button [ onClick (PostCommand VrtNuTvGuide) ] [ text "vrt nu tv guide" ]
         , button [ onClick (PostCommand VrtNuLive) ] [ text "vrt nu live" ]
+        , button [ onClick (PostCommand Spotify) ] [ text "spotify" ]
         ]
 
 
@@ -86,6 +100,15 @@ update msg model =
                             Maybe.withDefault 0 (String.toInt value)
                     in
                     ( { model | brightness = brightness }
+                    , postCommand command model.server_ip
+                    )
+
+                Volume value ->
+                    let
+                        volume =
+                            Maybe.withDefault 0 (String.toInt value)
+                    in
+                    ( { model | volume = volume }
                     , postCommand command model.server_ip
                     )
 
@@ -123,6 +146,9 @@ remoteCommandToJson remoteCommand =
         Shutdown ->
             Encode.object [ ( "Shutdown", Encode.null ) ]
 
+        ShutdownMonitor ->
+            Encode.object [ ( "ShutdownMonitor", Encode.null ) ]
+
         Brightness value ->
             let
                 brightness =
@@ -130,8 +156,12 @@ remoteCommandToJson remoteCommand =
             in
             Encode.object [ ( "Brightness", Encode.object [ ( "value", Encode.int brightness ) ] ) ]
 
-        ShutdownMonitor ->
-            Encode.object [ ( "ShutdownMonitor", Encode.null ) ]
+        Volume value ->
+            let
+                volume =
+                    Maybe.withDefault 0 (String.toInt value)
+            in
+            Encode.object [ ( "Volume", Encode.object [ ( "value", Encode.int volume ) ] ) ]
 
         Netflix ->
             Encode.object [ ( "Netflix", Encode.null ) ]
@@ -141,3 +171,6 @@ remoteCommandToJson remoteCommand =
 
         VrtNuLive ->
             Encode.object [ ( "VrtNuLive", Encode.null ) ]
+
+        Spotify ->
+            Encode.object [ ( "Spotify", Encode.null ) ]

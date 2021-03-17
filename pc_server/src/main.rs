@@ -26,16 +26,46 @@ fn execute_command(command: Json<Command>) -> () {
         }
     }
 
+    fn set_volume(volume: u8) -> () {
+        let result = process::Command::new("sudo")
+            .arg("-u")
+            .arg("tsrapnik")
+            .arg("amixer")
+            .arg("-D")
+            .arg("pulse")
+            .arg("sset")
+            .arg("Master")
+            .arg(format!("{}%", volume))
+            .spawn();
+
+        if let Err(error) = result {
+            println!("Failed to change volume. error: \"{}\"", error);
+        }
+    }
+
+    fn open_spotify() {
+        let result = process::Command::new("sudo")
+            .arg("-u")
+            .arg("tsrapnik")
+            .arg("spotify")
+            .spawn();
+
+        if let Err(error) = result {
+            println!("Failed to open spotify. error: \"{}\"", error);
+        }
+    }
+
     match command.into_inner() {
         Command::Shutdown => {
             if system_shutdown::shutdown().is_err() {
-                println!("shutting down failed.");
+                println!("Shutting down failed.");
             }
         }
+        Command::Volume { value } => {
+            set_volume(value);
+        }
         Command::Netflix => {
-            println!("before");
             open_site("https://netflix.com");
-            println!("after");
         }
         Command::VrtNuTvGuide => {
             open_site("https://www.vrt.be/vrtnu/tv-gids/");
@@ -43,8 +73,11 @@ fn execute_command(command: Json<Command>) -> () {
         Command::VrtNuLive => {
             open_site("https://www.vrt.be/vrtnu/livestream/");
         }
+        Command::Spotify => {
+            open_spotify();
+        }
         _ => {
-            println!("not a pc command.")
+            println!("Not a pc command.")
         }
     }
 }

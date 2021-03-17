@@ -5323,7 +5323,7 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (server_ip) {
 	return _Utils_Tuple2(
-		{brightness: 0, server_ip: server_ip},
+		{brightness: 0, server_ip: server_ip, volume: 0},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6151,6 +6151,12 @@ var $author$project$Main$remoteCommandToJson = function (remoteCommand) {
 					[
 						_Utils_Tuple2('Shutdown', $elm$json$Json$Encode$null)
 					]));
+		case 'ShutdownMonitor':
+			return $elm$json$Json$Encode$object(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('ShutdownMonitor', $elm$json$Json$Encode$null)
+					]));
 		case 'Brightness':
 			var value = remoteCommand.a;
 			var brightness = A2(
@@ -6170,11 +6176,24 @@ var $author$project$Main$remoteCommandToJson = function (remoteCommand) {
 									$elm$json$Json$Encode$int(brightness))
 								])))
 					]));
-		case 'ShutdownMonitor':
+		case 'Volume':
+			var value = remoteCommand.a;
+			var volume = A2(
+				$elm$core$Maybe$withDefault,
+				0,
+				$elm$core$String$toInt(value));
 			return $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
-						_Utils_Tuple2('ShutdownMonitor', $elm$json$Json$Encode$null)
+						_Utils_Tuple2(
+						'Volume',
+						$elm$json$Json$Encode$object(
+							_List_fromArray(
+								[
+									_Utils_Tuple2(
+									'value',
+									$elm$json$Json$Encode$int(volume))
+								])))
 					]));
 		case 'Netflix':
 			return $elm$json$Json$Encode$object(
@@ -6188,11 +6207,17 @@ var $author$project$Main$remoteCommandToJson = function (remoteCommand) {
 					[
 						_Utils_Tuple2('VrtNuTvGuide', $elm$json$Json$Encode$null)
 					]));
-		default:
+		case 'VrtNuLive':
 			return $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2('VrtNuLive', $elm$json$Json$Encode$null)
+					]));
+		default:
+			return $elm$json$Json$Encode$object(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('Spotify', $elm$json$Json$Encode$null)
 					]));
 	}
 };
@@ -6210,21 +6235,33 @@ var $author$project$Main$update = F2(
 	function (msg, model) {
 		if (msg.$ === 'PostCommand') {
 			var command = msg.a;
-			if (command.$ === 'Brightness') {
-				var value = command.a;
-				var brightness = A2(
-					$elm$core$Maybe$withDefault,
-					0,
-					$elm$core$String$toInt(value));
-				return _Utils_Tuple2(
-					_Utils_update(
+			switch (command.$) {
+				case 'Brightness':
+					var value = command.a;
+					var brightness = A2(
+						$elm$core$Maybe$withDefault,
+						0,
+						$elm$core$String$toInt(value));
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{brightness: brightness}),
+						A2($author$project$Main$postCommand, command, model.server_ip));
+				case 'Volume':
+					var value = command.a;
+					var volume = A2(
+						$elm$core$Maybe$withDefault,
+						0,
+						$elm$core$String$toInt(value));
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{volume: volume}),
+						A2($author$project$Main$postCommand, command, model.server_ip));
+				default:
+					return _Utils_Tuple2(
 						model,
-						{brightness: brightness}),
-					A2($author$project$Main$postCommand, command, model.server_ip));
-			} else {
-				return _Utils_Tuple2(
-					model,
-					A2($author$project$Main$postCommand, command, model.server_ip));
+						A2($author$project$Main$postCommand, command, model.server_ip));
 			}
 		} else {
 			var result = msg.a;
@@ -6240,6 +6277,10 @@ var $author$project$Main$PostCommand = function (a) {
 };
 var $author$project$Main$Shutdown = {$: 'Shutdown'};
 var $author$project$Main$ShutdownMonitor = {$: 'ShutdownMonitor'};
+var $author$project$Main$Spotify = {$: 'Spotify'};
+var $author$project$Main$Volume = function (a) {
+	return {$: 'Volume', a: a};
+};
 var $author$project$Main$VrtNuLive = {$: 'VrtNuLive'};
 var $author$project$Main$VrtNuTvGuide = {$: 'VrtNuTvGuide'};
 var $elm$html$Html$button = _VirtualDom_node('button');
@@ -6328,6 +6369,17 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$text('shut down')
 					])),
 				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Main$PostCommand($author$project$Main$ShutdownMonitor))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('shutdown monitor')
+					])),
+				A2(
 				$elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
@@ -6357,15 +6409,33 @@ var $author$project$Main$view = function (model) {
 						_List_Nil)
 					])),
 				A2(
-				$elm$html$Html$button,
+				$elm$html$Html$div,
+				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Main$PostCommand($author$project$Main$ShutdownMonitor))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('shutdown monitor')
+						A2(
+						$elm$html$Html$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('volume')
+							])),
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$type_('range'),
+								$elm$html$Html$Attributes$min('0'),
+								$elm$html$Html$Attributes$max('100'),
+								$elm$html$Html$Attributes$value(
+								$elm$core$String$fromInt(model.volume)),
+								$elm$html$Html$Events$onInput(
+								function (newValue) {
+									return $author$project$Main$PostCommand(
+										$author$project$Main$Volume(newValue));
+								})
+							]),
+						_List_Nil)
 					])),
 				A2(
 				$elm$html$Html$button,
@@ -6399,6 +6469,17 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text('vrt nu live')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Main$PostCommand($author$project$Main$Spotify))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('spotify')
 					]))
 			]));
 };
