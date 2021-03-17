@@ -69,6 +69,7 @@ view model =
         , button [ onClick (PostCommand Netflix) ] [ text "netflix" ]
         , button [ onClick (PostCommand VrtNuTvGuide) ] [ text "vrt nu tv guide" ]
         , button [ onClick (PostCommand VrtNuLive) ] [ text "vrt nu live" ]
+        , button [ onClick (PostCommand Spotify) ] [ text "spotify" ]
         ]
 
 

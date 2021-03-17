@@ -6246,6 +6246,7 @@ var $author$project$Main$PostCommand = function (a) {
 };
 var $author$project$Main$Shutdown = {$: 'Shutdown'};
 var $author$project$Main$ShutdownMonitor = {$: 'ShutdownMonitor'};
+var $author$project$Main$Spotify = {$: 'Spotify'};
 var $author$project$Main$VrtNuLive = {$: 'VrtNuLive'};
 var $author$project$Main$VrtNuTvGuide = {$: 'VrtNuTvGuide'};
 var $elm$html$Html$button = _VirtualDom_node('button');
@@ -6405,6 +6406,17 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text('vrt nu live')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Main$PostCommand($author$project$Main$Spotify))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('spotify')
 					]))
 			]));
 };
