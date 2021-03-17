@@ -8,4 +8,5 @@ pub enum Command {
     Netflix,
     VrtNuTvGuide,
     VrtNuLive,
+    Spotify,
 }

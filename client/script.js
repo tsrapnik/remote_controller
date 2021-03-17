@@ -6188,11 +6188,17 @@ var $author$project$Main$remoteCommandToJson = function (remoteCommand) {
 					[
 						_Utils_Tuple2('VrtNuTvGuide', $elm$json$Json$Encode$null)
 					]));
-		default:
+		case 'VrtNuLive':
 			return $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2('VrtNuLive', $elm$json$Json$Encode$null)
+					]));
+		default:
+			return $elm$json$Json$Encode$object(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('Spotify', $elm$json$Json$Encode$null)
 					]));
 	}
 };

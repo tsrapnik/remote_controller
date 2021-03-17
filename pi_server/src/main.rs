@@ -100,15 +100,15 @@ fn execute_command(command: Json<Command>) -> () {
 
             send_to_pc(command);
         }
-        // TODO => {
-        //     // These commands are all meant for the pc (with monitor turned off). So we check the pc
-        //     // is awake and if so forward the command.
+        Command::Spotify => {
+            // These commands are all meant for the pc (with monitor turned off). So we check the pc
+            // is awake and if so forward the command.
 
-        //     // Always wake, if already awake the pc just ignores the wol packet.
-        //     wake_pc();
+            // Always wake, if already awake the pc just ignores the wol packet.
+            wake_pc();
 
-        //     send_to_pc(command);
-        // }
+            send_to_pc(command);
+        }
         Command::Shutdown => {
             // This command is meant to turn of the pc. So just send without checking if it arrives,
             // since if the pc is already off, we won't get any response.

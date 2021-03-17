@@ -30,6 +30,7 @@ type RemoteCommand
     | Netflix
     | VrtNuTvGuide
     | VrtNuLive
+    | Spotify
 
 
 
@@ -141,3 +142,6 @@ remoteCommandToJson remoteCommand =
 
         VrtNuLive ->
             Encode.object [ ( "VrtNuLive", Encode.null ) ]
+
+        Spotify ->
+            Encode.object [ ( "Spotify", Encode.null ) ]
