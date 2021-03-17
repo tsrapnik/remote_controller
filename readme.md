@@ -78,3 +78,25 @@ When running ubuntu use following command to allow the server through the firewa
 ```
 sudo ufw allow 80/tcp
 ```
+
+In stead of running remote_controller servers as root, just let it auto start as currently logged in user. To accomplish this create a `remote_controller.desktop` file in `~/.config/autostart`. Put text below in it.
+
+```
+[Desktop Entry]
+Type=Application
+Path=/home/tsrapnik/projects/remote_controller/pi_server
+Exec=/home/tsrapnik/projects/remote_controller/pi_server/target/release/remote_controller
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=remote_controller
+Name=remote_controller
+Comment[en_US]=
+Comment=
+```
+
+You cannot run remote_controller with a port below 1024 as non root. So just use a port above 1024 and forward all incoming traffic on port 80 to it with command below.
+
+```
+sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 1080
+```
