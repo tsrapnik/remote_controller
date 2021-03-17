@@ -100,3 +100,16 @@ You cannot run remote_controller with a port below 1024 as non root. So just use
 ```
 sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 1080
 ```
+
+Verify with following command.
+
+```
+sudo iptables -t nat -L
+```
+
+Run commands below to make this change persistent.
+
+```
+sudo sh -c "iptables-save > /etc/iptables.rules"
+sudo apt-get install iptables-persistent
+```
