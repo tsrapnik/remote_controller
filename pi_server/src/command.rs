@@ -3,8 +3,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize, Clone)]
 pub enum Command {
     Shutdown,
-    Brightness { value: u8 },
     ShutdownMonitor,
+    Brightness { value: u8 },
+    Volume { value: u8 },
     Netflix,
     VrtNuTvGuide,
     VrtNuLive,

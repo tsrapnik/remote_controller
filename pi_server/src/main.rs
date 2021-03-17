@@ -52,8 +52,9 @@ fn execute_command(command: Json<Command>) -> () {
         // Keep sending until it succeeds or maximum tries reached.
         let max_tries = 10usize;
         for _ in 0..max_tries {
-            let response = ureq::post("http://192.168.1.2/") //TODO: put address in config file.
-                .send_json(serde_json::to_value(command.clone()).unwrap());
+            let response =
+                ureq::post("http://192.168.1.2/") //TODO: put address in config file.
+                    .send_json(serde_json::to_value(command.clone()).unwrap());
 
             match response {
                 Ok(_) => {
@@ -64,7 +65,7 @@ fn execute_command(command: Json<Command>) -> () {
                 }
             }
         }
-    
+
         // If previous loop never returned we failed to get a proper response.
         println!("Sending command failed.");
     }
@@ -100,7 +101,7 @@ fn execute_command(command: Json<Command>) -> () {
 
             send_to_pc(command);
         }
-        Command::Spotify => {
+        Command::Spotify | Command::Volume { value: _ } => {
             // These commands are all meant for the pc (with monitor turned off). So we check the pc
             // is awake and if so forward the command.
 
