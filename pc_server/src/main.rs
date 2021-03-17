@@ -29,13 +29,11 @@ fn execute_command(command: Json<Command>) -> () {
     match command.into_inner() {
         Command::Shutdown => {
             if system_shutdown::shutdown().is_err() {
-                println!("shutting down failed.");
+                println!("Shutting down failed.");
             }
         }
         Command::Netflix => {
-            println!("before");
             open_site("https://netflix.com");
-            println!("after");
         }
         Command::VrtNuTvGuide => {
             open_site("https://www.vrt.be/vrtnu/tv-gids/");
@@ -44,7 +42,7 @@ fn execute_command(command: Json<Command>) -> () {
             open_site("https://www.vrt.be/vrtnu/livestream/");
         }
         _ => {
-            println!("not a pc command.")
+            println!("Not a pc command.")
         }
     }
 }

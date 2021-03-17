@@ -37,14 +37,14 @@ fn execute_command(command: Json<Command>) -> () {
     fn wake_pc() {
         let wol_pc = WolPacket::from_string("4c:cc:6a:b0:b4:8c", ':'); //TODO: put address in config file.
         if wol_pc.send_magic().is_err() {
-            println!("waking pc failed.")
+            println!("Waking pc failed.")
         }
     }
 
     fn wake_monitor() {
         let wol_monitor = WolPacket::from_string("18:65:71:9f:a4:27", ':'); //TODO: put address in config file.
         if wol_monitor.send_magic().is_err() {
-            println!("waking monitor failed.")
+            println!("Waking monitor failed.")
         }
     }
 
@@ -81,13 +81,13 @@ fn execute_command(command: Json<Command>) -> () {
                 .fold(0x00, |acc, x| acc ^ x);
             message[message.len() - 1] = checksum;
             if send_tcp_message(&message).is_err() {
-                println!("changing brightness failed.")
+                println!("Changing brightness failed.")
             }
         }
         Command::ShutdownMonitor => {
             let message: &[u8] = &[0xa6, 0x01, 0x00, 0x00, 0x00, 0x04, 0x01, 0x18, 0x01, 0xbb];
             if send_tcp_message(message).is_err() {
-                println!("shutting down monitor failed.")
+                println!("Shutting down monitor failed.")
             }
         }
         Command::Netflix | Command::VrtNuTvGuide | Command::VrtNuLive => {
