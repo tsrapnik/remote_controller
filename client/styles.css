@@ -28,6 +28,7 @@ button {
     min-height: 30px;
 
     background-color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.9);
     border: none;
     font-size: min(4vw, 4vh);
     padding: 4px 4px;
@@ -60,14 +61,16 @@ div {
     min-height: 30px;
 
     display: grid;
-    justify-content: center;
+    justify-content: stretch;
     align-content: center;
 
-    padding: 0 5px;
+    padding: 30px 5px;
     background-color: rgba(255, 255, 255, 0.4);
 }
 
 h1 {
+    color: rgba(0, 0, 0, 0.9);
+    text-align: center;
     font-size: min(4vw, 4vh);
     font-weight: normal;
     margin: 0;
@@ -75,7 +78,6 @@ h1 {
 
 input[type=range] {
     -webkit-appearance: none;
-    width: 100%;
     margin: 10px 0;
     background: rgba(0, 0, 0, 0.2);
     outline: none;
