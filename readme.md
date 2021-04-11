@@ -113,3 +113,25 @@ Run commands below to make this change persistent.
 sudo sh -c "iptables-save > /etc/iptables.rules"
 sudo apt-get install iptables-persistent
 ```
+
+Alternative to autostart on pi is to create /etc/rc.local on the pi and add the following. It runs as root this way.
+
+```
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+cd /home/ubuntu/remote_controller/pi_server
+/home/ubuntu/remote_controller/pi_server/target/release/remote_controller &
+
+exit 0
+```
