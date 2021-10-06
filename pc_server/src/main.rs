@@ -14,7 +14,7 @@ use system_shutdown;
 #[post("/", format = "application/json", data = "<command>")]
 fn execute_command(command: Json<Command>) -> () {
     fn open_site(site: &str) {
-        let result = process::Command::new("chromium")
+        let result = process::Command::new("google-chrome")
             .arg(site)
             .spawn();
 
