@@ -29,8 +29,7 @@ type RemoteCommand
     | Brightness String
     | Volume String
     | Netflix
-    | VrtNuTvGuide
-    | VrtNuLive
+    | VrtMax
     | Spotify
 
 
@@ -79,8 +78,7 @@ view model =
                 []
             ]
         , button [ onClick (PostCommand Netflix) ] [ text "netflix" ]
-        , button [ onClick (PostCommand VrtNuTvGuide) ] [ text "vrt nu tv guide" ]
-        , button [ onClick (PostCommand VrtNuLive) ] [ text "vrt nu live" ]
+        , button [ onClick (PostCommand VrtMax) ] [ text "vrt max" ]
         , button [ onClick (PostCommand Spotify) ] [ text "spotify" ]
         ]
 
@@ -166,11 +164,8 @@ remoteCommandToJson remoteCommand =
         Netflix ->
             Encode.object [ ( "Netflix", Encode.null ) ]
 
-        VrtNuTvGuide ->
-            Encode.object [ ( "VrtNuTvGuide", Encode.null ) ]
-
-        VrtNuLive ->
-            Encode.object [ ( "VrtNuLive", Encode.null ) ]
+        VrtMax ->
+            Encode.object [ ( "VrtMax", Encode.null ) ]
 
         Spotify ->
             Encode.object [ ( "Spotify", Encode.null ) ]

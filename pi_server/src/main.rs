@@ -91,7 +91,7 @@ fn execute_command(command: Json<Command>) -> () {
                 println!("Shutting down monitor failed.")
             }
         }
-        Command::Netflix | Command::VrtNuTvGuide | Command::VrtNuLive => {
+        Command::Netflix | Command::VrtMax => {
             // These commands are all meant for the pc (with monitor turned on). So we check the pc
             // is awake and if so forward the command.
 

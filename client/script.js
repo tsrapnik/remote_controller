@@ -6201,17 +6201,11 @@ var $author$project$Main$remoteCommandToJson = function (remoteCommand) {
 					[
 						_Utils_Tuple2('Netflix', $elm$json$Json$Encode$null)
 					]));
-		case 'VrtNuTvGuide':
+		case 'VrtMax':
 			return $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
-						_Utils_Tuple2('VrtNuTvGuide', $elm$json$Json$Encode$null)
-					]));
-		case 'VrtNuLive':
-			return $elm$json$Json$Encode$object(
-				_List_fromArray(
-					[
-						_Utils_Tuple2('VrtNuLive', $elm$json$Json$Encode$null)
+						_Utils_Tuple2('VrtMax', $elm$json$Json$Encode$null)
 					]));
 		default:
 			return $elm$json$Json$Encode$object(
@@ -6281,8 +6275,7 @@ var $author$project$Main$Spotify = {$: 'Spotify'};
 var $author$project$Main$Volume = function (a) {
 	return {$: 'Volume', a: a};
 };
-var $author$project$Main$VrtNuLive = {$: 'VrtNuLive'};
-var $author$project$Main$VrtNuTvGuide = {$: 'VrtNuTvGuide'};
+var $author$project$Main$VrtMax = {$: 'VrtMax'};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
@@ -6453,22 +6446,11 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Events$onClick(
-						$author$project$Main$PostCommand($author$project$Main$VrtNuTvGuide))
+						$author$project$Main$PostCommand($author$project$Main$VrtMax))
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('vrt nu tv guide')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Main$PostCommand($author$project$Main$VrtNuLive))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('vrt nu live')
+						$elm$html$Html$text('vrt max')
 					])),
 				A2(
 				$elm$html$Html$button,

@@ -58,10 +58,7 @@ fn execute_command(command: Json<Command>) -> () {
         Command::Netflix => {
             open_site("https://netflix.com");
         }
-        Command::VrtNuTvGuide => {
-            open_site("https://www.vrt.be/vrtnu/tv-gids/");
-        }
-        Command::VrtNuLive => {
+        Command::VrtMax => {
             open_site("https://www.vrt.be/vrtnu/livestream/");
         }
         Command::Spotify => {

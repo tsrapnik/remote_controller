@@ -7,7 +7,6 @@ pub enum Command {
     Brightness { value: u8 },
     Volume { value: u8 },
     Netflix,
-    VrtNuTvGuide,
-    VrtNuLive,
+    VrtMax,
     Spotify,
 }
