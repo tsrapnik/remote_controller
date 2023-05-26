@@ -8,7 +8,7 @@ mod command;
 use command::Command;
 use rocket::response;
 use rocket_contrib::json::Json;
-use std::{io, io::Write, net::TcpStream, thread, thread::Thread, time};
+use std::{io, io::Write, net::TcpStream, thread, time};
 use wakey::WolPacket;
 
 #[get("/")]
