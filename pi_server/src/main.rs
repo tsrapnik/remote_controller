@@ -2,13 +2,13 @@
 
 #[macro_use]
 extern crate rocket;
-
+ 
 mod command;
 
 use command::Command;
 use rocket::response;
 use rocket_contrib::json::Json;
-use std::{io, io::Write, net::TcpStream};
+use std::{io, io::Write, net::TcpStream, thread, thread::Thread, time};
 use wakey::WolPacket;
 
 #[get("/")]
@@ -97,6 +97,7 @@ fn execute_command(command: Json<Command>) -> () {
 
             // Always wake, if already awake the pc or monitor just ignores the wol packet.
             wake_monitor();
+            thread::sleep(time::Duration::from_millis(500));
             wake_pc();
 
             send_to_pc(command);
