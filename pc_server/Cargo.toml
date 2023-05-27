@@ -2,13 +2,11 @@
 name = "remote_controller"
 version = "0.1.0"
 authors = ["tsrapnik <yannick-peeters@outlook.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rocket = "0.4.6"
-rocket_contrib = "0.4.6"
-serde = { version = "1.0.119", features = ["derive"] }
-system_shutdown = "3.0.0"
-wakey = "0.1.2"
+rocket = { version = "0.5.0-rc.3", features = ["json"] }
+serde = { version = "1.0.163", features = ["derive"] }
+system_shutdown = "4.0.1"

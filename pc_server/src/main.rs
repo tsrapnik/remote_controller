@@ -1,5 +1,3 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
 #[macro_use]
 extern crate rocket;
 
@@ -7,16 +5,14 @@ extern crate rocket;
 mod command;
 
 use command::Command;
-use rocket_contrib::json::Json;
+use rocket::serde::json::Json;
 use std::process;
 use system_shutdown;
 
 #[post("/", format = "application/json", data = "<command>")]
 fn execute_command(command: Json<Command>) -> () {
     fn open_site(site: &str) {
-        let result = process::Command::new("google-chrome")
-            .arg(site)
-            .spawn();
+        let result = process::Command::new("google-chrome").arg(site).spawn();
 
         if let Err(error) = result {
             println!("Failed to open \"{}\". error: \"{}\"", site, error);
@@ -38,8 +34,7 @@ fn execute_command(command: Json<Command>) -> () {
     }
 
     fn open_spotify() {
-        let result = process::Command::new("spotify")
-            .spawn();
+        let result = process::Command::new("spotify").spawn();
 
         if let Err(error) = result {
             println!("Failed to open spotify. error: \"{}\"", error);
@@ -70,8 +65,7 @@ fn execute_command(command: Json<Command>) -> () {
     }
 }
 
-fn main() {
-    rocket::ignite()
-        .mount("/", routes![execute_command])
-        .launch();
+#[launch]
+fn rocket() -> _ {
+    rocket::build().mount("/", routes![execute_command])
 }

@@ -1,29 +1,26 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
 #[macro_use]
 extern crate rocket;
- 
+
 mod command;
 
 use command::Command;
-use rocket::response;
-use rocket_contrib::json::Json;
+use rocket::{fs, serde::json::Json};
 use std::{io, io::Write, net::TcpStream, thread, time};
 use wakey::WolPacket;
 
 #[get("/")]
-fn load_html() -> Option<response::NamedFile> {
-    response::NamedFile::open("../client/index.html").ok()
+async fn load_html() -> Option<fs::NamedFile> {
+    fs::NamedFile::open("../client/index.html").await.ok()
 }
 
 #[get("/styles.css")]
-fn load_styles() -> Option<response::NamedFile> {
-    response::NamedFile::open("../client/styles.css").ok()
+async fn load_styles() -> Option<fs::NamedFile> {
+    fs::NamedFile::open("../client/styles.css").await.ok()
 }
 
 #[get("/script.js")]
-fn load_script() -> Option<response::NamedFile> {
-    response::NamedFile::open("../client/script.js").ok()
+async fn load_script() -> Option<fs::NamedFile> {
+    fs::NamedFile::open("../client/script.js").await.ok()
 }
 
 #[post("/", format = "application/json", data = "<command>")]
@@ -120,11 +117,10 @@ fn execute_command(command: Json<Command>) -> () {
     }
 }
 
-fn main() {
-    rocket::ignite()
-        .mount(
-            "/",
-            routes![load_html, load_styles, load_script, execute_command],
-        )
-        .launch();
+#[launch]
+fn rocket() -> _ {
+    rocket::build().mount(
+        "/",
+        routes![load_html, load_styles, load_script, execute_command],
+    )
 }
