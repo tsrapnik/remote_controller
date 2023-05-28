@@ -4,7 +4,7 @@ extern crate rocket;
 mod command;
 
 use command::Command;
-use rocket::{fs, serde::json::Json, time::Duration};
+use rocket::{fs, serde::json::Json};
 use std::{io, io::Write, net::TcpStream, thread, time};
 use wakey::WolPacket;
 
