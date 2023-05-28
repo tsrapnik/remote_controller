@@ -94,7 +94,7 @@ fn execute_command(command: Json<Command>) -> () {
 
             // Always wake, if already awake the pc or monitor just ignores the wol packet.
             wake_monitor();
-            thread::sleep(time::Duration::from_millis(500));
+            thread::sleep(time::Duration::from_millis(2000));
             wake_pc();
 
             send_to_pc(command);
