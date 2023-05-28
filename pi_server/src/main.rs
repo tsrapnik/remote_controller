@@ -59,7 +59,7 @@ fn execute_command(command: Json<Command>) -> () {
                 }
                 Err(error) => {
                     println!("{}", error);
-                    thread::sleep(time::Duration::from_millis(500));
+                    thread::sleep(time::Duration::from_millis(1000));
                 }
             }
         }
