@@ -4,7 +4,7 @@ extern crate rocket;
 mod command;
 
 use command::Command;
-use rocket::{fs, serde::json::Json};
+use rocket::{fs, serde::json::Json, time::Duration};
 use std::{io, io::Write, net::TcpStream, thread, time};
 use wakey::WolPacket;
 
@@ -59,6 +59,7 @@ fn execute_command(command: Json<Command>) -> () {
                 }
                 Err(error) => {
                     println!("{}", error);
+                    thread::sleep(time::Duration::from_millis(500));
                 }
             }
         }
